@@ -1,0 +1,34 @@
+{
+	"name": "My Journey",
+	"image": "mcr.microsoft.com/devcontainers/go:1-1.23-bookworm",
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {
+			"installDirectlyFromGitHubRelease": true,
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"installYarnUsingApt": true,
+			"version": "latest",
+			"pnpmVersion": "none",
+			"nvmVersion": "latest"
+		}
+	},
+	"customizations": {
+		"codespaces": {
+			"repositories": {
+				"dkhalife/my-journey-frontend": {
+					"permissions": {
+						"contents": "write",
+						"pullRequests": "write"
+					}
+				},
+				"dkhalife/my-journey-backend": {
+					"permissions": {
+						"contents": "write",
+						"pullRequests": "write"
+					}
+				}
+			}
+		}
+	}
+}
