@@ -10,9 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
 	"go.uber.org/fx/fxevent"
+	"gorm.io/gorm"
 )
 
-func newServer(lc fx.Lifecycle) *gin.Engine {
+func newServer(lc fx.Lifecycle, db *gorm.DB) *gin.Engine {
 	gin.SetMode(gin.DebugMode)
 	r := gin.New()
 	r.Use(utils.RequestLogger())
@@ -25,6 +26,12 @@ func newServer(lc fx.Lifecycle) *gin.Engine {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			log.Println("Starting server")
+
+			if err := utils.AutoMigrate(db); err != nil {
+				log.Println("Error migrating database:", err)
+				return nil
+			}
+
 			go func() {
 				if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 					log.Println("Error starting server:", err)
@@ -50,6 +57,7 @@ func main() {
 		fx.WithLogger(func() fxevent.Logger {
 			return &fxevent.NopLogger
 		}),
+		fx.Provide(utils.NewDB),
 		fx.Provide(apis.UsersAPI),
 		fx.Provide(newServer),
 		fx.Invoke(
