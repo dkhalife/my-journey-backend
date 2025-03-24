@@ -35,7 +35,8 @@ func newServer(lc fx.Lifecycle) *gin.Engine {
 		OnStop: func(ctx context.Context) error {
 			log.Println("Stopping server")
 			if err := srv.Shutdown(ctx); err != nil {
-				log.Fatalf("Error shutting down server: %v", err)
+				log.Println("Error shutting down server:", err)
+				return err
 			}
 			return nil
 		},
