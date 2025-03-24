@@ -29,7 +29,7 @@ func newServer(lc fx.Lifecycle, db *gorm.DB) *gin.Engine {
 
 			if err := utils.AutoMigrate(db); err != nil {
 				log.Println("Error migrating database:", err)
-				return nil
+				return err
 			}
 
 			go func() {

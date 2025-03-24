@@ -6,11 +6,7 @@ import (
 )
 
 func AutoMigrate(db *gorm.DB) error {
-	if err := db.AutoMigrate(
+	return db.AutoMigrate(
 		models.User{},
-	); err != nil {
-		return err
-	}
-
-	return nil
+	)
 }
