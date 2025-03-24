@@ -52,8 +52,7 @@ func main() {
 		fx.Provide(apis.UsersAPI),
 		fx.Provide(newServer),
 		fx.Invoke(
-			apis.UserRoutes,
-			func(r *gin.Engine) {}),
+			apis.UserRoutes),
 	)
 
 	app.Run()
